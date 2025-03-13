@@ -1,13 +1,7 @@
-let question = {
-    title: 'gato',
-    aleternatives: ['dog', 'cat', 'bird', 'fish'],
-    correctAnswer: 1
-};
-
 let questions = [
     {
         title: 'gato',
-        aleternatives: ['dog', 'cat', 'bird', 'fish'],
+        alternatives: ['dog', 'cat', 'bird', 'fish'],
         correctAnswer: 1
     },
     {
@@ -31,65 +25,92 @@ let app = {
     start: function() {
 
         this.currentPosition = 0;
+        this.score = 0;
 
         // get alternatives
         let alts = document.querySelectorAll('.alternative');
-        console.log(alts);
-
-        console.log(this);
 
         // for each to update the alts
-        alts.forEach(function(element, index) {
-            // Selecting a item and adding a event listener
-            element.addEventListener('click', function() {
+        alts.forEach((element, index) => {
+
+            element.addEventListener('click', () => {
                 // check correct answer
                 this.checkAnswer(index);
-            }.bind(this));
-        }.bind(this));
+            });
+        });
 
+        // show stats at start
+        this.updateStats();
         // show first question
-        this.showQuestion();
+        this.showQuestion(questions[this.currentPosition]);
     },
 
     showQuestion: function(q) {
-
-        //keep track of the current question
-        this.currQuestion = q;
-
-        // select dom element
+        // show question title
         let titleDiv = document.getElementById('title');
+        console.log(titleDiv);
+        console.log(q);
 
-        // Modify Dom
         titleDiv.textContent = q.title;
 
         // show alternatives
         let alts = document.querySelectorAll('.alternative');
 
-        alts.forEach(function(element, index) {
-            element.textContent = q.aleternatives[index];
-        })
+        alts.forEach(function(element, index){
+            element.textContent = q.alternatives[index];        
+        });
     },
 
     checkAnswer: function(userSelected) {
-        if(this.currQuestion.correctAnswer == userSelected) {
+
+        let currQuestion = questions[this.currentPosition];
+
+
+        if(currQuestion.correctAnswer == userSelected) {
             //correct
             console.log('Correct Answer');
+            this.score++;
+            this.showResult(true);
         } else
         //incorrect
         console.log('Incorrect Answer');
+        this.showResult(false);
+
+
+        //refresh the stats
+        this.updateStats();
 
         //increase position
         this.increasePosition();
         //show next question 
-        this.showQuestion(questions[this.currPosition]);
+        this.showQuestion(questions[this.currentPosition]);
     },
 
     increasePosition: function() {
-        this.currPosition++;
+        this.currentPosition++;
 
-        if(this.currPosition == question.length) {
-            this.currPosition = 0;
+        if(this.currentPosition == questions.length) {
+            this.currentPosition = 0;
         }
+    },
+
+    updateStats: function() {
+        let scoreDiv = document.getElementById('score');
+        scoreDiv.textContent = `Your score: ${this.score}`;
+    },
+
+    showResult: function(isCorrect) {
+        let resultDiv = document.getElementById('result');
+        let result = '';
+
+        //checks
+        if(isCorrect == true\) {
+            result = 'Correct Answer!';
+        } else {
+            result = 'Wrong Answer!';
+        }
+
+        resultDiv.textContent = result;
     }
 };
 
