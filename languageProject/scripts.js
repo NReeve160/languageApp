@@ -22,6 +22,8 @@ let questions = [
 ]
 
 let app = {
+
+    //funciton that starts the program
     start: function() {
 
         this.currentPosition = 0;
@@ -65,23 +67,24 @@ let app = {
 
         let currQuestion = questions[this.currentPosition];
 
-
         if(currQuestion.correctAnswer == userSelected) {
             //correct
             console.log('Correct Answer');
             this.score++;
+
+            //show that the answer is correct
             this.showResult(true);
-        } else
-        //incorrect
-        console.log('Incorrect Answer');
-        this.showResult(false);
+        } else {
+            //incorrect
+            console.log('Incorrect Answer');
+            this.showResult(false);
 
+            //refresh the stats
+            this.updateStats();
 
-        //refresh the stats
-        this.updateStats();
-
-        //increase position
-        this.increasePosition();
+            //increase position
+            this.increasePosition();
+        }
         //show next question 
         this.showQuestion(questions[this.currentPosition]);
     },
@@ -104,7 +107,7 @@ let app = {
         let result = '';
 
         //checks
-        if(isCorrect == true\) {
+        if(isCorrect == true) {
             result = 'Correct Answer!';
         } else {
             result = 'Wrong Answer!';
